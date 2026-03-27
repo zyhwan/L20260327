@@ -15,8 +15,14 @@ APlayer::~APlayer()
 
 }
 
+void APlayer::BeginPlay()
+{
+	__super::BeginPlay();
+}
+
 void APlayer::Tick()
 {
+	__super::Tick();
 	Move();
 }
 

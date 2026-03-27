@@ -15,6 +15,7 @@ public:
 	AActor(int InX = 0, int InY = 0, char InMesh = ' ', int InWeight = Layer::Terrain);
 	virtual ~AActor();
 
+	virtual void BeginPlay();
 	virtual void Tick();
 	virtual void Render();
 

@@ -14,6 +14,10 @@ AActor::~AActor()
 {
 }
 
+void AActor::BeginPlay()
+{
+}
+
 void AActor::Tick()
 {
 
