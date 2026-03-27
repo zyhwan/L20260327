@@ -55,6 +55,7 @@ UWorld* UEngine::GetWorld()
 void UEngine::Input()
 {
     KeyCode = _getch();
+    system("cls");
 }
 
 void UEngine::Tick()

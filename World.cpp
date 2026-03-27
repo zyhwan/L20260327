@@ -7,7 +7,7 @@
 #include "Floor.h"
 #include "Wall.h"
 #include "Goal.h"
-
+#include <algorithm>
 
 UWorld::UWorld()
 {
@@ -60,10 +60,13 @@ void UWorld::Load(std::string MapName)
 			{
 				SpawnActor<APlayer>()->SetActorLocation(i, Y);
 			}
-
 		}
 		++Y;
 	}
+
+	std::sort(Actors.begin(), Actors.end(), [](AActor* a, AActor* b) {
+		return a->GetWeight() < b->GetWeight();
+		});
 
 }
 

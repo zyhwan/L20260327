@@ -2,11 +2,12 @@
 #include <Windows.h>
 #include "Actor.h"
 
-AActor::AActor(int InX, int InY, char InMesh)
+AActor::AActor(int InX, int InY, char InMesh, int InWeight)
 {
 	X = InX;
 	Y = InY;
 	Mesh = InMesh;
+	Weight = InWeight;
 }
 
 AActor::~AActor()

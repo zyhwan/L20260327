@@ -18,6 +18,7 @@ public:
 	void Run();
 	UWorld* GetWorld();
 
+	static int KeyCode;
 private:
 	void Input();
 	void Tick();
@@ -25,7 +26,6 @@ private:
 
 	UWorld* World;
 
-	int bIsRunning;
-	static int KeyCode;
+	int bIsRunning : 1;
 };
 
