@@ -4,7 +4,7 @@
 class AFloor : public AActor
 {
 public:
-	AFloor(int InX = 0, int InY = 0, char InMesh = ' ', int Weight = Layer::Terrain);
+	AFloor(int InX = 0, int InY = 0, char InMesh = ' ', int Weight = Layer::Floor);
 	virtual ~AFloor();
 
 };

@@ -7,6 +7,7 @@
 #include "Floor.h"
 #include "Wall.h"
 #include "Goal.h"
+#include "Engine.h"
 #include <algorithm>
 
 UWorld::UWorld()
@@ -47,18 +48,22 @@ void UWorld::Load(std::string MapName)
 			if (Line[i] == '#')
 			{
 				SpawnActor<AWall>()->SetActorLocation(i, Y);
+				SpawnActor<AFloor>()->SetActorLocation(i, Y);
 			}
 			if (Line[i] == 'M')
 			{
 				SpawnActor<AMonster>()->SetActorLocation(i, Y);
+				SpawnActor<AFloor>()->SetActorLocation(i, Y);
 			}
 			if (Line[i] == 'G')
 			{
 				SpawnActor<AGoal>()->SetActorLocation(i, Y);
+				SpawnActor<AFloor>()->SetActorLocation(i, Y);
 			}
 			if (Line[i] == 'P')
 			{
 				SpawnActor<APlayer>()->SetActorLocation(i, Y);
+				SpawnActor<AFloor>()->SetActorLocation(i, Y);
 			}
 		}
 		++Y;
@@ -80,8 +85,14 @@ void UWorld::Tick()
 
 void UWorld::Render()
 {
+	//그리기 전에 지워주기
+	GEngine->Clear();
+
 	for (auto actors : Actors)
 	{
 		actors->Render();
 	}
+
+	//그리고 나서 다음 버퍼로 바꿔주기
+	GEngine->Filp();
 }
