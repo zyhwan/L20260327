@@ -7,6 +7,10 @@ APlayer::APlayer(int InX, int InY, char InMesh, int InWeight)
 	Y = InY;
 	Mesh = InMesh;
 	ZOrder = InWeight;
+
+	R = 255;
+	G = 0;
+	B = 0;
 }
 
 APlayer::~APlayer()
@@ -28,24 +32,33 @@ void APlayer::Tick()
 
 void APlayer::Move()
 {
-	if (UEngine::KeyCode == 'w' || UEngine::KeyCode == 'W')
+	SDL_Event Event = GEngine->GetEvent();
+
+	if (Event.type == SDL_KEYDOWN)
 	{
-		--Y;
-		SetActorLocation(X, Y);
-	}
-	if (UEngine::KeyCode == 's' || UEngine::KeyCode == 'S')
-	{
-		++Y;
-		SetActorLocation(X, Y);
-	}
-	if (UEngine::KeyCode == 'a' || UEngine::KeyCode == 'A')
-	{
-		--X;
-		SetActorLocation(X, Y);
-	}
-	if (UEngine::KeyCode == 'd' || UEngine::KeyCode == 'D')
-	{
-		++X;
-		SetActorLocation(X, Y);
+		if (Event.key.keysym.sym == SDLK_w)
+		{
+			--Y;
+			SetActorLocation(X, Y);
+		}
+		if (Event.key.keysym.sym == SDLK_s)
+		{
+			++Y;
+			SetActorLocation(X, Y);
+		}
+		if (Event.key.keysym.sym == SDLK_a)
+		{
+			--X;
+			SetActorLocation(X, Y);
+		}
+		if (Event.key.keysym.sym == SDLK_d)
+		{
+			++X;
+			SetActorLocation(X, Y);
+		}
+		if (Event.key.keysym.sym == SDLK_ESCAPE)
+		{
+			GEngine->Stop();
+		}
 	}
 }

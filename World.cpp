@@ -69,7 +69,7 @@ void UWorld::Load(std::string MapName)
 		++Y;
 	}
 
-	std::sort(Actors.begin(), Actors.end(), [](AActor* a, AActor* b) {
+	std::sort(Actors.begin(), Actors.end(), [](AActor* a, AActor* b) -> int {
 		return a->GetWeight() < b->GetWeight();
 		});
 

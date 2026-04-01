@@ -6,6 +6,10 @@ AMonster::AMonster(int InX, int InY, char InMesh, int InWeight)
 	Y = InY;
 	Mesh = InMesh;
 	ZOrder = InWeight;
+
+	R = 255;
+	G = 255;
+	B = 0;
 }
 
 AMonster::~AMonster()

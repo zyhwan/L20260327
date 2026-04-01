@@ -8,6 +8,10 @@ AActor::AActor(int InX, int InY, char InMesh, int InWeight)
 	Y = InY;
 	Mesh = InMesh;
 	ZOrder = InWeight;
+
+	R = 0;
+	G = 0;
+	B = 0;
 }
 
 AActor::~AActor()
@@ -26,6 +30,7 @@ void AActor::Tick()
 void AActor::Render()
 {
 	GEngine->Render(X, Y, Mesh);
+	GEngine->Render(X, Y, R, G, B);
 }
 
 void AActor::SetActorLocation(int x, int y)

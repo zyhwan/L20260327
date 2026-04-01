@@ -1,9 +1,13 @@
 #pragma once
 #include <Windows.h>
+#include "SDL.h"
+
+#pragma comment(lib, "SDL2")
+#pragma comment(lib, "SDL2main")
 
 class UWorld;
-
 class UEngine
+
 {
 private:
 	UEngine();
@@ -27,16 +31,26 @@ public:
 	void InitBuffer();
 	void Clear(); //이전 그림 지우기.
 	void Render(int InX, int InY, char InMesh);
+	void Render(int InX, int InY,int R, int G, int B);
 	void Filp(); //1,2번 버퍼를 돌려주는 함수.
 	void TermBuffer();
 
-	static int KeyCode;
+	void Stop();
+
+	inline const SDL_Event& GetEvent()
+	{
+		return MyEvent;
+	}
+
 private:
 	void Input();
 	void Tick();
 	void Render();
 
 	UWorld* World;
+	SDL_Window* MyWindow;
+	SDL_Renderer* MyRender;
+	SDL_Event MyEvent; //포인터 변수가 아니면 전방선언이 안되서 라이브러리를 포함해줘야한다.
 
 	int bIsRunning : 1;
 };

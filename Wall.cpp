@@ -6,6 +6,10 @@ AWall::AWall(int InX, int InY, char InMesh, int InWeight)
 	Y = InY;
 	Mesh = InMesh;
 	ZOrder = InWeight;
+
+	R = 0;
+	G = 255;
+	B = 0;
 }
 
 AWall::~AWall()

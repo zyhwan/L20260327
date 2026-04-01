@@ -31,6 +31,11 @@ public:
 protected:
 	int X;
 	int Y;
+
+	int R;
+	int G;
+	int B;
+
 	char Mesh;
 	int ZOrder; //렌더링 순서 가중치
 };

@@ -2,9 +2,9 @@
 #include <conio.h>
 #include "World.h"
 #include "Actor.h"
+#include "SDL.h"
 
 UEngine* UEngine::Instance = nullptr;
-int UEngine::KeyCode = 0;
 
 UEngine::UEngine()
 {
@@ -27,6 +27,14 @@ UEngine::~UEngine()
 
 void UEngine::Init() 
 {
+	//초기화
+	SDL_Init(SDL_INIT_EVERYTHING);
+
+	//윈도우는 메모리에 잡히기때문에 포인터로 연결해줌.
+	MyWindow = SDL_CreateWindow("Hello", 100, 100, 1024, 768, SDL_WINDOW_SHOWN);
+	//렌더러 만들기 윈도우와 동일하다.
+	MyRender = SDL_CreateRenderer(MyWindow, -1, 0);
+
     bIsRunning = 1;
 	InitBuffer();
     World = new UWorld();
@@ -34,6 +42,10 @@ void UEngine::Init()
 
 void UEngine::Term()
 {
+	SDL_DestroyRenderer(MyRender);
+	SDL_DestroyWindow(MyWindow);
+	SDL_Quit();
+
     delete World;
 	TermBuffer();
     World = nullptr;
@@ -43,6 +55,8 @@ void UEngine::Run()
 {
 	while (bIsRunning)
 	{
+		SDL_PollEvent(&MyEvent);
+
 		Input();
 		Tick();
 		Render();
@@ -56,19 +70,29 @@ UWorld* UEngine::GetWorld()
 
 void UEngine::Input()
 {
-
-	KeyCode = _getch();
-	
+	//if (_kbhit())
+	//{
+	//	KeyCode = _getch();
+	//}
 }
 
 void UEngine::Tick()
 {
+	if (GetEvent().type == SDL_QUIT)
+	{
+		bIsRunning = false;
+	}
     World->Tick();
 }
 
 void UEngine::Render()
 {
+	SDL_SetRenderDrawColor(MyRender, 255, 255, 255, 255);
+	SDL_RenderClear(MyRender);
+
     World->Render();
+
+	SDL_RenderPresent(MyRender);
 }
 
 
@@ -106,6 +130,17 @@ void UEngine::Render(int InX, int InY, char InMesh)
 	WriteFile(ScreenBufferHandle[ActiveScreenBufferIndex], Mesh, 1, NULL, NULL);
 }
 
+void UEngine::Render(int InX, int InY, int R, int G, int B)
+{
+	int TileSize = 30;
+	SDL_SetRenderDrawColor(MyRender, R, G, B, 255);
+	//SDL_RenderDrawPoint(MyRender, InX, InY);
+
+	SDL_Rect Rect{ InX * TileSize, InY * TileSize, TileSize, TileSize };
+
+	SDL_RenderFillRect(MyRender, &Rect);
+}
+
 void UEngine::Filp()
 {
 	SetConsoleActiveScreenBuffer(ScreenBufferHandle[ActiveScreenBufferIndex]);
@@ -116,4 +151,9 @@ void UEngine::TermBuffer()
 {
 	CloseHandle(ScreenBufferHandle[0]);
 	CloseHandle(ScreenBufferHandle[1]);
+}
+
+void UEngine::Stop()
+{
+	bIsRunning = false;
 }
