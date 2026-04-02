@@ -6,6 +6,7 @@ using namespace std;
 
 int SDL_main(int argc, char* argv[])
 {
+
 	GEngine->GetWorld()->Load("MyMaps.txt");
 
 	GEngine->Run();

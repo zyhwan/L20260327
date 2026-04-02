@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 
 enum Layer
 {
@@ -8,6 +9,9 @@ enum Layer
 	Monster = 3,
 	Player = 4
 };
+
+struct SDL_Texture;
+struct SDL_Surface;
 
 
 class AActor
@@ -27,6 +31,7 @@ public:
 		return ZOrder;
 	}
 
+	virtual void Load(std::string Filename);
 
 protected:
 	int X;
@@ -38,5 +43,12 @@ protected:
 
 	char Mesh;
 	int ZOrder; //렌더링 순서 가중치
+
+	SDL_Texture* Texture;
+	SDL_Surface* Image;
+
+	int SpriteX = 0;
+	int SpriteY = 0;
+
 };
 

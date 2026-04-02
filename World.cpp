@@ -34,6 +34,10 @@ void UWorld::Load(std::string MapName)
 	}
 
 	int Y = 0;
+
+	int MaxX = -1;
+	int MaxY = -1;
+
 	std::string Line;
 
 	while (!File.eof())
@@ -65,9 +69,18 @@ void UWorld::Load(std::string MapName)
 				SpawnActor<APlayer>()->SetActorLocation(i, Y);
 				SpawnActor<AFloor>()->SetActorLocation(i, Y);
 			}
+			if (MaxX < i)
+			{
+				MaxX = i;
+			}
 		}
 		++Y;
 	}
+
+	MaxX += 1;
+	MaxY = Y;
+
+	SDL_SetWindowSize(GEngine->GetWindow(), MaxX * 80, MaxY * 80);
 
 	std::sort(Actors.begin(), Actors.end(), [](AActor* a, AActor* b) -> int {
 		return a->GetWeight() < b->GetWeight();

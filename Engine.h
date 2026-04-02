@@ -42,6 +42,23 @@ public:
 		return MyEvent;
 	}
 
+	const float GetDeltaSeconds()
+	{
+		return DeltaSeconds;
+	}
+
+	inline SDL_Renderer* GetRenderer() const
+	{
+		return MyRender;
+	}
+
+	inline SDL_Window* GetWindow() const
+	{
+		return MyWindow;
+	}
+
+	void Render(int InX, int InY, SDL_Texture* InTexture);
+
 private:
 	void Input();
 	void Tick();
@@ -53,6 +70,8 @@ private:
 	SDL_Event MyEvent; //포인터 변수가 아니면 전방선언이 안되서 라이브러리를 포함해줘야한다.
 
 	int bIsRunning : 1;
+
+	float DeltaSeconds;
 };
 
 #define GEngine     UEngine::GetInstance()
