@@ -10,9 +10,8 @@ enum Layer
 	Player = 4
 };
 
-struct SDL_Texture;
 struct SDL_Surface;
-
+struct SDL_Texture;
 
 class AActor
 {
@@ -31,8 +30,6 @@ public:
 		return ZOrder;
 	}
 
-	virtual void Load(std::string Filename);
-
 protected:
 	int X;
 	int Y;
@@ -44,8 +41,8 @@ protected:
 	char Mesh;
 	int ZOrder; //렌더링 순서 가중치
 
-	SDL_Texture* Texture;
-	SDL_Surface* Image;
+	SDL_Texture* Texture = nullptr;
+	SDL_Surface* Image = nullptr;
 
 	int SpriteX = 0;
 	int SpriteY = 0;

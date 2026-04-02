@@ -8,6 +8,10 @@ public:
 	virtual ~AMonster();
 
 
+	virtual void Tick() override;
 
+private:
+	float TotalTime = 0.0f;
+	float ExecutionTime = 0.5f;
 };
 

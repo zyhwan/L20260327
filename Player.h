@@ -12,8 +12,6 @@ public:
 	virtual void Render() override;
 
 	void Move();
-	virtual void Load(std::string Filename) override;
-
 	void Attack();
 
 private:

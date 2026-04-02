@@ -1,0 +1,32 @@
+#include "ResourceManager.h"
+#include "Engine.h"
+
+UResourceManager::UResourceManager()
+{
+}
+
+UResourceManager::~UResourceManager()
+{
+
+}
+
+Resource& UResourceManager::LoadTexture(std::string Filename, bool bIsColorKey, Uint8 R, Uint8 G, Uint8 B)
+{
+	if (Resources.find(Filename) != Resources.end())
+	{
+		return Resources.find(Filename)->second;
+	}
+
+	Resource NewResource;
+
+	NewResource.Image = SDL_LoadBMP(Filename.c_str()); //메모리 ram에 적재
+	if (bIsColorKey == true)
+	{
+		SDL_SetColorKey(NewResource.Image, SDL_TRUE, SDL_MapRGB(NewResource.Image->format, R, G, B));
+	}
+	NewResource.Texture = SDL_CreateTextureFromSurface(GEngine->GetRenderer(), NewResource.Image); //gpu에서 관리.
+
+	Resources[Filename] = NewResource;
+
+	return Resources[Filename];
+}

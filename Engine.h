@@ -6,8 +6,9 @@
 #pragma comment(lib, "SDL2main")
 
 class UWorld;
-class UEngine
+class UResourceManager;
 
+class UEngine
 {
 private:
 	UEngine();
@@ -57,6 +58,11 @@ public:
 		return MyWindow;
 	}
 
+	inline UResourceManager* GetResourceManager() const
+	{
+		return ResourceManager;
+	}
+
 	void Render(int InX, int InY, SDL_Texture* InTexture);
 
 private:
@@ -72,6 +78,9 @@ private:
 	int bIsRunning : 1;
 
 	float DeltaSeconds;
+
+	UResourceManager* ResourceManager;
+
 };
 
 #define GEngine     UEngine::GetInstance()

@@ -1,6 +1,8 @@
 #include <iostream>
 #include "Actor.h"
 #include "Engine.h"
+#include "ResourceManager.h"
+
 
 AActor::AActor(int InX, int InY, char InMesh, int InWeight)
 {
@@ -12,12 +14,13 @@ AActor::AActor(int InX, int InY, char InMesh, int InWeight)
 	R = 0;
 	G = 0;
 	B = 0;
+
+	Texture = nullptr;
+	Image = nullptr;
 }
 
 AActor::~AActor()
 {
-	SDL_FreeSurface(Image);
-	SDL_DestroyTexture(Texture);
 }
 
 void AActor::BeginPlay()
@@ -31,9 +34,9 @@ void AActor::Tick()
 
 void AActor::Render()
 {
-	//GEngine->Render(X, Y, Mesh);
-	//GEngine->Render(X, Y, R, G, B);
-	GEngine->Render(X, Y, Texture);
+	int TileSize = 80;
+	SDL_Rect DestinationRect = { X * TileSize, Y * TileSize, TileSize, TileSize };
+	SDL_RenderCopy(GEngine->GetRenderer(), Texture, nullptr, &DestinationRect);
 }
 
 void AActor::SetActorLocation(int x, int y)
@@ -42,12 +45,3 @@ void AActor::SetActorLocation(int x, int y)
 	Y = y;
 }
 
-void AActor::Load(std::string Filename)
-{
-	Image = SDL_LoadBMP(Filename.c_str()); //메모리 ram에 적재
-	
-	SDL_SetColorKey(Image, SDL_TRUE, SDL_MapRGB(Image->format, 255, 255, 255));
-
-	Texture = SDL_CreateTextureFromSurface(GEngine->GetRenderer(), Image); //gpu에서 관리.
-
-}

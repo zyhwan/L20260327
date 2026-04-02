@@ -4,6 +4,7 @@
 #include "World.h"
 #include "Actor.h"
 #include "SDL.h"
+#include "ResourceManager.h"
 
 UEngine* UEngine::Instance = nullptr;
 
@@ -39,6 +40,9 @@ void UEngine::Init()
 	DeltaSeconds = 0;
 
     bIsRunning = 1;
+	
+	ResourceManager = new UResourceManager();
+	
 	InitBuffer();
     World = new UWorld();
 }
@@ -50,8 +54,10 @@ void UEngine::Term()
 	SDL_Quit();
 
     delete World;
+	delete ResourceManager;
 	TermBuffer();
     World = nullptr;
+	ResourceManager = nullptr;
 }
 
 void UEngine::Run()
@@ -70,7 +76,6 @@ void UEngine::Run()
 		CurrentTime = SDL_GetTicks64();
 		DeltaSeconds = (float)(CurrentTime - ElapsedTime) / 1000.0f;
 
-		//SDL_Log("%f", DeltaSeconds);
 	}
 }
 
@@ -145,7 +150,7 @@ void UEngine::Render(int InX, int InY, char InMesh)
 
 void UEngine::Render(int InX, int InY, int R, int G, int B)
 {
-	int TileSize = 30;
+	int TileSize = 80;
 	SDL_SetRenderDrawColor(MyRender, R, G, B, 255);
 	//SDL_RenderDrawPoint(MyRender, InX, InY);
 
