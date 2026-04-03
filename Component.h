@@ -13,7 +13,8 @@ public:
 	virtual ~UComponent();
 
 	virtual void BeginPlay() = 0; //순수 가상 함수.
-	virtual void Tick(); //구현 안하도 된다. 
+	virtual void Tick() = 0; //구현 안하도 된다. 
 
+	class AActor* Owner; //억세스 함수로 리턴해주는걸로 바꿔야함.
 };
 

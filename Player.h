@@ -1,26 +1,25 @@
 #pragma once
 #include "Actor.h"
 
+class USpriteComponent;
+
 class APlayer : public AActor
 {
 public:
-	APlayer(int InX = 0, int InY = 0, char InMesh = 'P', int InWeight = Layer::Player);
+	APlayer(int InX = 0, int InY = 0, char InMesh = 'P');
 	virtual ~APlayer();
 
-	virtual void BeginPlay()override;
 	virtual void Tick() override;
-	virtual void Render() override;
 
 	void Move();
 	void Attack();
 
+	USpriteComponent* SpriteComponent;
 private:
+
 	int SpriteIndexX;
 	int SpriteIndexY;
-
-	int ImageH;
-	int ImageW;
-
+	 
 	float TotalTime;
 	float ExecutionTime = 0.1f;
 };

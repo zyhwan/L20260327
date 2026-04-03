@@ -2,20 +2,16 @@
 #include "Engine.h"
 #include "ResourceManager.h"
 
-AMonster::AMonster(int InX, int InY, char InMesh, int InWeight)
+AMonster::AMonster(int InX, int InY, char InMesh)
 {
 	X = InX;
 	Y = InY;
-	Mesh = InMesh;
-	ZOrder = InWeight;
-
-	R = 255;
-	G = 255;
-	B = 0;
 
 	Resource TempResource = GEngine->GetResourceManager()->LoadTexture("Data/monster.bmp", true, 255, 255, 255);
-	Image = TempResource.Image;
-	Texture = TempResource.Texture;
+	SpriteComponent = CreateDefaultSubObject<USpriteComponent>("Sprite");
+	SpriteComponent->ZOrder = 10;
+	SpriteComponent->Image = TempResource.Image;
+	SpriteComponent->Texture = TempResource.Texture;
 }
 
 AMonster::~AMonster()

@@ -9,6 +9,7 @@
 #include "Goal.h"
 #include "Engine.h"
 #include <algorithm>
+#include "SpriteComponent.h"
 
 UWorld::UWorld()
 {
@@ -83,8 +84,37 @@ void UWorld::Load(std::string MapName)
 
 	SDL_SetWindowSize(GEngine->GetWindow(), MaxX * 80, MaxY * 80);
 
-	std::sort(Actors.begin(), Actors.end(), [](AActor* a, AActor* b) -> int {
-		return a->GetWeight() < b->GetWeight();
+	std::sort(Actors.begin(), Actors.end(), [&](AActor* a, AActor* b) -> int {
+		USpriteComponent* FirstRenderComponet = nullptr;
+		for (auto Component : a->Components)
+		{
+			FirstRenderComponet = dynamic_cast<USpriteComponent*>(Component);
+			if (FirstRenderComponet)
+			{
+				break;
+			}
+		}
+		if (!FirstRenderComponet)
+		{
+			return 0;
+		}
+
+		USpriteComponent* SecondRenderComponet = nullptr;
+		for (auto Component : b->Components)
+		{
+			SecondRenderComponet = dynamic_cast<USpriteComponent*>(Component);
+			if (SecondRenderComponet)
+			{
+				break;
+			}
+		}
+		if (!SecondRenderComponet)
+		{
+			return 0;
+		}
+
+		return (FirstRenderComponet->ZOrder < SecondRenderComponet->ZOrder ? 1 : 0);
+
 		});
 
 }
@@ -104,7 +134,18 @@ void UWorld::Render()
 
 	for (auto actors : Actors)
 	{
-		actors->Render();
+		//모든 엑터 중에서 Render 가능한 컴포넌트가 있으면 렌더 하기.
+
+		for (auto Component : actors->Components)
+		{
+			//추상 클래스는 dynamic_cast가 안된다. 인스턴스를 못뽑기 때문에 변환이 안된다.
+			USpriteComponent* RenderComponet = dynamic_cast<USpriteComponent*>(Component);
+			if (RenderComponet)
+			{
+				RenderComponet->Render();
+			}
+
+		}
 	}
 
 	//그리고 나서 다음 버퍼로 바꿔주기

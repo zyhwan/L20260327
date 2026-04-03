@@ -2,28 +2,29 @@
 #include "Engine.h"
 #include "GameplayStatics.h"
 #include "ResourceManager.h"
+#include "SpriteComponent.h"
 
-APlayer::APlayer(int InX, int InY, char InMesh, int InWeight)
+APlayer::APlayer(int InX, int InY, char InMesh)
 {
 	X = InX;
 	Y = InY;
-	Mesh = InMesh;
-	ZOrder = InWeight;
-
-	R = 255;
-	G = 0;
-	B = 0;
 
 	Resource TempResource = GEngine->GetResourceManager()->LoadTexture("Data/player.bmp", true, 255, 0, 255);
-	Image = TempResource.Image;
-	Texture = TempResource.Texture;
+	SpriteComponent = CreateDefaultSubObject<USpriteComponent>("Sprite");
+	SpriteComponent->ZOrder = 100;
+	SpriteComponent->Image = TempResource.Image;
+	SpriteComponent->Texture = TempResource.Texture;
 
-	ImageW = Image->w / 5;
-	ImageH = Image->h / 5;
+	//Resource TempResource = GEngine->GetResourceManager()->LoadTexture("Data/player.bmp", true, 255, 0, 255);
+	//Image = TempResource.Image;
+	//Texture = TempResource.Texture;
 
-	SpriteIndexX = 0; // 스프라이트 하나 값.
-	SpriteIndexY = 0; //
-	TotalTime = 0.f;
+	//ImageW = Image->w / 5;
+	//ImageH = Image->h / 5;
+
+	//SpriteIndexX = 0; // 스프라이트 하나 값.
+	//SpriteIndexY = 0; //
+	//TotalTime = 0.f;
 }
 
 APlayer::~APlayer()
@@ -32,26 +33,11 @@ APlayer::~APlayer()
 
 }
 
-void APlayer::BeginPlay()
-{
-	__super::BeginPlay();
-}
-
 void APlayer::Tick()
 {
 	__super::Tick();
 	Move();
 	Attack();
-}
-
-void APlayer::Render()
-{
-	int TileSize = 80;
-
-	SDL_Rect SourceRect = { SpriteIndexX * ImageW, SpriteIndexY * ImageH, ImageW, ImageH };
-	SDL_Rect Rect{ X * TileSize, Y * TileSize, TileSize, TileSize };
-	SDL_RenderCopy(GEngine->GetRenderer(), Texture, &SourceRect, &Rect);
-
 }
 
 void APlayer::Move()
