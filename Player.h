@@ -1,11 +1,9 @@
 #pragma once
-#include "Actor.h"
+#include "Character.h"
 
 class USpriteAnimationComponent;
-class UCollisionComponent;
-class AActor;
 
-class APlayer : public AActor
+class APlayer : public ACharacter
 {
 public:
 	APlayer(int InX = 0, int InY = 0, char InMesh = 'P');
@@ -23,7 +21,6 @@ public:
 	UCollisionComponent* CollisionComponent;
 
 private:
-	bool PrdictMove(int InX, int InY); //추후에 무브먼트 컴포넌트로 만들어야한다.
 
 };
 

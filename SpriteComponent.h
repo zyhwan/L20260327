@@ -7,7 +7,7 @@ class USpriteComponent : public UComponent, public IRenderableComponent
 {
 public:
 	USpriteComponent();
-	~USpriteComponent();
+	virtual ~USpriteComponent();
 
 
 	//UComponentÀÇ ±¸Çö, abstract class

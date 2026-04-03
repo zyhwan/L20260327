@@ -4,7 +4,7 @@
 #include "ResourceManager.h"
 
 
-AActor::AActor(int InX, int InY, char InMesh)
+AActor::AActor(int InX, int InY)
 {
 	X = InX;
 	Y = InY;

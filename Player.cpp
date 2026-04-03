@@ -58,28 +58,6 @@ void APlayer::ProcessBeginOverlap(AActor* OtherActor)
 
 }
 
-bool APlayer::PrdictMove(int InX, int InY)
-{
-	for (auto Other : GEngine->GetWorld()->GetActors())
-	{
-		for (auto Component : Other->Components)
-		{
-			UCollisionComponent* OtherCollision = dynamic_cast<UCollisionComponent*>(Component);
-			if (OtherCollision)
-			{
-				if (OtherCollision->bIsGenerateHit && InX == Other->GetX() && InY == Other->GetY())
-				{
-
-					ReceiveHit(Other);
-					return false;
-				}
-			}
-		}
-	}
-
-	return true;	
-}
-
 void APlayer::Move()
 {
 	SDL_Event Event = GEngine->GetEvent();

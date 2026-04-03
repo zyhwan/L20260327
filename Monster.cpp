@@ -11,7 +11,7 @@ AMonster::AMonster(int InX, int InY, char InMesh)
 
 	Resource TempResource = GEngine->GetResourceManager()->LoadTexture("Data/monster.bmp", true, 255, 255, 255);
 	SpriteComponent = CreateDefaultSubObject<USpriteComponent>("Sprite");
-	SpriteComponent->ZOrder = 10;
+	SpriteComponent->ZOrder = 15;
 	SpriteComponent->Image = TempResource.Image;
 	SpriteComponent->Texture = TempResource.Texture;
 
@@ -28,7 +28,6 @@ AMonster::~AMonster()
 
 void AMonster::Tick()
 {
-	__super::Tick();
 	__super::Tick();
 	TotalTime += GEngine->GetDeltaSeconds();
 
@@ -66,26 +65,4 @@ void AMonster::Tick()
 
 		TotalTime = 0.0f;
 	}
-}
-
-bool AMonster::PrdictMove(int InX, int InY)
-{
-	for (auto Other : GEngine->GetWorld()->GetActors())
-	{
-		for (auto Component : Other->Components)
-		{
-			UCollisionComponent* OtherCollision = dynamic_cast<UCollisionComponent*>(Component);
-			if (OtherCollision)
-			{
-				if (OtherCollision->bIsGenerateHit && InX == Other->GetX() && InY == Other->GetY())
-				{
-
-					ReceiveHit(Other);
-					return false;
-				}
-			}
-		}
-	}
-
-	return true;
 }

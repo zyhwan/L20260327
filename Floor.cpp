@@ -3,7 +3,7 @@
 #include "ResourceManager.h"
 #include "SpriteComponent.h"
 
-AFloor::AFloor(int InX, int InY, char InMesh)
+AFloor::AFloor(int InX, int InY)
 {
 	X = InX;
 	Y = InY;

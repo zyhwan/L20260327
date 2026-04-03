@@ -10,6 +10,8 @@
 #include "Engine.h"
 #include <algorithm>
 #include "SpriteComponent.h"
+#include "GameMode.h"
+
 
 UWorld::UWorld()
 {
@@ -26,6 +28,8 @@ UWorld::~UWorld()
 
 void UWorld::Load(std::string MapName)
 {
+	Actors.push_back(new AGameMode());
+
 	std::ifstream File(MapName);
 
 	if (!File.is_open())
@@ -58,7 +62,6 @@ void UWorld::Load(std::string MapName)
 			if (Line[i] == 'M')
 			{
 				SpawnActor<AMonster>()->SetActorLocation(i, Y);
-				SpawnActor<AMonster>()->SetActorLocation(i, Y);
 				SpawnActor<AFloor>()->SetActorLocation(i, Y);
 			}
 			if (Line[i] == 'G')
@@ -84,39 +87,44 @@ void UWorld::Load(std::string MapName)
 
 	SDL_SetWindowSize(GEngine->GetWindow(), MaxX * 80, MaxY * 80);
 
-	std::sort(Actors.begin(), Actors.end(), [&](AActor* a, AActor* b) -> int {
-		USpriteComponent* FirstRenderComponet = nullptr;
-		for (auto Component : a->Components)
-		{
-			FirstRenderComponet = dynamic_cast<USpriteComponent*>(Component);
-			if (FirstRenderComponet)
+	std::sort(Actors.begin(), Actors.end(),
+		[&](AActor* First, AActor* Second) -> int {
+
+			USpriteComponent* FirstRenderComponent = nullptr;
+			for (auto Component : First->Components)
 			{
-				break;
+				FirstRenderComponent = dynamic_cast<USpriteComponent*>(Component);
+				if (FirstRenderComponent)
+				{
+					break;
+				}
 			}
-		}
-		if (!FirstRenderComponet)
-		{
-			return 0;
-		}
 
-		USpriteComponent* SecondRenderComponet = nullptr;
-		for (auto Component : b->Components)
-		{
-			SecondRenderComponet = dynamic_cast<USpriteComponent*>(Component);
-			if (SecondRenderComponet)
+			if (!FirstRenderComponent)
 			{
-				break;
+				return 0;
 			}
+
+			USpriteComponent* SecondRenderComponent = nullptr;
+			for (auto Component : Second->Components)
+			{
+				SecondRenderComponent = dynamic_cast<USpriteComponent*>(Component);
+				if (SecondRenderComponent)
+				{
+					break;
+				}
+			}
+
+			if (!SecondRenderComponent)
+			{
+				return 0;
+			}
+
+			return (FirstRenderComponent->ZOrder < SecondRenderComponent->ZOrder ? 1 : 0);
+
 		}
-		if (!SecondRenderComponet)
-		{
-			return 0;
-		}
-
-		return (FirstRenderComponet->ZOrder < SecondRenderComponet->ZOrder ? 1 : 0);
-
-		});
-
+	);
+	
 }
 
 void UWorld::Tick()
