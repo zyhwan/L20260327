@@ -12,9 +12,22 @@ AActor::AActor(int InX, int InY, char InMesh)
 
 AActor::~AActor()
 {
+	for (auto& Component : Components)
+	{
+		delete Component;
+	}
+	Components.clear();
 }
 
 void AActor::Tick()
+{
+	for (auto Component : Components)
+	{
+		Component->Tick();
+	}
+}
+
+void AActor::BeginPlay()
 {
 
 }
@@ -23,5 +36,9 @@ void AActor::SetActorLocation(int x, int y)
 {
 	X = x;
 	Y = y;
+}
+
+void AActor::ReceiveHit(AActor* Other)
+{
 }
 

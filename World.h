@@ -13,6 +13,11 @@ public:
 	void Tick();
 	void Render();
 
+	inline const std::vector<AActor*> GetActors()
+	{
+		return Actors;
+	}
+
 	template<typename T>
 	AActor* SpawnActor()
 	{

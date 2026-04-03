@@ -3,6 +3,7 @@
 
 class USpriteComponent;
 
+class UCollisionComponent;
 class AWall : public AActor
 {
 public:
@@ -11,6 +12,7 @@ public:
 
 
 	USpriteComponent* SpriteComponent;
+	UCollisionComponent* CollisionComponent;	
 
 };
 

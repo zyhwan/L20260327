@@ -1,8 +1,11 @@
 #include "Player.h"
 #include "Engine.h"
+#include "World.h"
 #include "GameplayStatics.h"
 #include "ResourceManager.h"
 #include "SpriteComponent.h"
+#include "SpriteAnimationComponent.h"
+#include "CollisionComponent.h"
 
 APlayer::APlayer(int InX, int InY, char InMesh)
 {
@@ -10,27 +13,32 @@ APlayer::APlayer(int InX, int InY, char InMesh)
 	Y = InY;
 
 	Resource TempResource = GEngine->GetResourceManager()->LoadTexture("Data/player.bmp", true, 255, 0, 255);
-	SpriteComponent = CreateDefaultSubObject<USpriteComponent>("Sprite");
-	SpriteComponent->ZOrder = 100;
-	SpriteComponent->Image = TempResource.Image;
-	SpriteComponent->Texture = TempResource.Texture;
+	SpriteAnimationComponent = CreateDefaultSubObject<USpriteAnimationComponent>("Sprite");
+	SpriteAnimationComponent->ZOrder = 100;
+	SpriteAnimationComponent->Image = TempResource.Image;
+	SpriteAnimationComponent->Texture = TempResource.Texture;
+	SpriteAnimationComponent->W = (float)(SpriteAnimationComponent->Image->w / 5);
+	SpriteAnimationComponent->H = (float)(SpriteAnimationComponent->Image->h / 5);
+	SpriteAnimationComponent->ExecutionTime = 0.1f;
 
-	//Resource TempResource = GEngine->GetResourceManager()->LoadTexture("Data/player.bmp", true, 255, 0, 255);
-	//Image = TempResource.Image;
-	//Texture = TempResource.Texture;
-
-	//ImageW = Image->w / 5;
-	//ImageH = Image->h / 5;
-
-	//SpriteIndexX = 0; // 스프라이트 하나 값.
-	//SpriteIndexY = 0; //
-	//TotalTime = 0.f;
+	CollisionComponent = CreateDefaultSubObject<UCollisionComponent>("Collision");
+	CollisionComponent->bIsGenerateHit = true;
+	CollisionComponent->bIsGenerateOverlap = true;
 }
 
 APlayer::~APlayer()
 {
 
 
+}
+
+void APlayer::BeginPlay()
+{
+	__super::BeginPlay();
+	OnActorBeginOverlap = [&](AActor* Other) -> void {
+		//충돌 로직.
+		};
+	//OnActorBeginOverlap = ProcessBeginOverlap;
 }
 
 void APlayer::Tick()
@@ -40,62 +48,68 @@ void APlayer::Tick()
 	Attack();
 }
 
+void APlayer::ReceiveHit(AActor* Other)
+{
+
+}
+
+void APlayer::ProcessBeginOverlap(AActor* OtherActor)
+{
+
+}
+
+bool APlayer::PrdictMove(int InX, int InY)
+{
+	for (auto Other : GEngine->GetWorld()->GetActors())
+	{
+		for (auto Component : Other->Components)
+		{
+			UCollisionComponent* OtherCollision = dynamic_cast<UCollisionComponent*>(Component);
+			if (OtherCollision)
+			{
+				if (OtherCollision->bIsGenerateHit && InX == Other->GetX() && InY == Other->GetY())
+				{
+
+					ReceiveHit(Other);
+					return false;
+				}
+			}
+		}
+	}
+
+	return true;	
+}
+
 void APlayer::Move()
 {
 	SDL_Event Event = GEngine->GetEvent();
 
 	if (Event.type == SDL_KEYDOWN)
 	{
-		if (Event.key.keysym.sym == SDLK_w)
+		if (Event.key.keysym.sym == SDLK_w && PrdictMove(X, Y - 1))
 		{
-			if (Y > 1)
-			{
-				--Y;
-			}
-			SetActorLocation(X, Y);
-			SpriteIndexY = 2;
+			--Y;
+			SpriteAnimationComponent->SpriteIndexY = 2;
 		}
-		if (Event.key.keysym.sym == SDLK_s)
+		if (Event.key.keysym.sym == SDLK_s && PrdictMove(X, Y + 1))
 		{
-			if (Y < 8)
-			{
-				++Y;
-			}
-			SetActorLocation(X, Y);
-			SpriteIndexY = 3;
+			++Y;
+			SpriteAnimationComponent->SpriteIndexY = 3;
 		}
-		if (Event.key.keysym.sym == SDLK_a)
+		if (Event.key.keysym.sym == SDLK_a && PrdictMove(X - 1, Y))
 		{
-			if (X > 1)
-			{
-				--X;
-			}
-			SetActorLocation(X, Y);
-			SpriteIndexY = 0;
+			--X;
+			SpriteAnimationComponent->SpriteIndexY = 0;
 		}
-		if (Event.key.keysym.sym == SDLK_d)
+		if (Event.key.keysym.sym == SDLK_d && PrdictMove(X + 1, Y))
 		{
-			if (X < 8)
-			{
-				++X;
-			}
-			SetActorLocation(X, Y);
-			SpriteIndexY = 1;
+			++X;
+			SpriteAnimationComponent->SpriteIndexY = 1;
 		}
 		if (Event.key.keysym.sym == SDLK_ESCAPE)
 		{
 			GEngine->Stop();
 		}
-	}
-
-	TotalTime += GEngine->GetDeltaSeconds();
-
-	if (TotalTime >= ExecutionTime)
-	{
-		SpriteIndexX += 1;
-		SpriteIndexX = SpriteIndexX % 5;
-
-		TotalTime = 0.0f;
 	}
 
 }
@@ -105,8 +119,8 @@ void APlayer::Attack()
 	SDL_Event Event = GEngine->GetEvent();
 	if (Event.key.keysym.sym == SDLK_f)
 	{
-		SpriteIndexY = 4;
-		TotalTime = 0.f;
+		SpriteAnimationComponent->SpriteIndexY = 4;
+		SpriteAnimationComponent->TotalTime = 0.f;
 	}
 
 }

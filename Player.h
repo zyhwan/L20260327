@@ -1,7 +1,9 @@
 #pragma once
 #include "Actor.h"
 
-class USpriteComponent;
+class USpriteAnimationComponent;
+class UCollisionComponent;
+class AActor;
 
 class APlayer : public AActor
 {
@@ -9,18 +11,19 @@ public:
 	APlayer(int InX = 0, int InY = 0, char InMesh = 'P');
 	virtual ~APlayer();
 
+	virtual void BeginPlay() override;
 	virtual void Tick() override;
-
 	void Move();
 	void Attack();
 
-	USpriteComponent* SpriteComponent;
-private:
+	virtual void ReceiveHit(AActor* Other) override;
+	void ProcessBeginOverlap(AActor* OtherActor);
 
-	int SpriteIndexX;
-	int SpriteIndexY;
-	 
-	float TotalTime;
-	float ExecutionTime = 0.1f;
+	USpriteAnimationComponent* SpriteAnimationComponent;
+	UCollisionComponent* CollisionComponent;
+
+private:
+	bool PrdictMove(int InX, int InY); //추후에 무브먼트 컴포넌트로 만들어야한다.
+
 };
 

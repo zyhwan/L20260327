@@ -2,6 +2,9 @@
 #include <string>
 #include <vector>
 #include "SpriteComponent.h"
+#include <functional>
+
+using FActorBeginOverlapSignature = std::function<void(class AActor*)>;
 
 struct SDL_Surface;
 struct SDL_Texture;
@@ -15,6 +18,7 @@ public:
 	virtual ~AActor();
 
 	virtual void Tick();
+	virtual void BeginPlay();
 
 	void SetActorLocation(int x, int y);
 
@@ -28,6 +32,11 @@ public:
 	{
 		return Y;
 	}
+
+	FActorBeginOverlapSignature OnActorBeginOverlap;
+
+	virtual void ReceiveHit(class AActor* Other);
+
 
 protected:
 	int X;

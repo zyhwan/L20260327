@@ -139,7 +139,7 @@ void UWorld::Render()
 		for (auto Component : actors->Components)
 		{
 			//추상 클래스는 dynamic_cast가 안된다. 인스턴스를 못뽑기 때문에 변환이 안된다.
-			USpriteComponent* RenderComponet = dynamic_cast<USpriteComponent*>(Component);
+			IRenderableComponent* RenderComponet = dynamic_cast<IRenderableComponent*>(Component);
 			if (RenderComponet)
 			{
 				RenderComponet->Render();

@@ -2,6 +2,7 @@
 #include "Actor.h"
 
 class USpriteComponent;
+class UCollisionComponent;
 
 class AMonster : public AActor
 {
@@ -12,7 +13,10 @@ public:
 
 	virtual void Tick() override;
 
+	UCollisionComponent* CollisionComponent;
+
 private:
+	bool PrdictMove(int InX, int InY); //추후에 무브먼트 컴포넌트로 만들어야한다.
 
 	USpriteComponent* SpriteComponent;
 

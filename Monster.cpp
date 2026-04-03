@@ -1,6 +1,8 @@
 #include "Monster.h"
 #include "Engine.h"
+#include "World.h"
 #include "ResourceManager.h"
+#include "CollisionComponent.h"
 
 AMonster::AMonster(int InX, int InY, char InMesh)
 {
@@ -12,6 +14,10 @@ AMonster::AMonster(int InX, int InY, char InMesh)
 	SpriteComponent->ZOrder = 10;
 	SpriteComponent->Image = TempResource.Image;
 	SpriteComponent->Texture = TempResource.Texture;
+
+	CollisionComponent = CreateDefaultSubObject<UCollisionComponent>("Collision");
+	CollisionComponent->bIsGenerateHit = true;
+	CollisionComponent->bIsGenerateOverlap = true;
 }
 
 AMonster::~AMonster()
@@ -33,25 +39,25 @@ void AMonster::Tick()
 		switch (Direction)
 		{
 		case 0:
-			if (Y > 1)
+			if (PrdictMove(X, Y - 1))
 			{
 				Y--;
 			}
 			break;
 		case 1:
-			if (Y < 8)
+			if (PrdictMove(X, Y + 1))
 			{
 				Y++;
 			}
 			break;
 		case 2:
-			if (X < 8)
+			if (PrdictMove(X + 1, Y))
 			{
 				X++;
 			}
 			break;
 		case 3:
-			if (X > 1)
+			if (PrdictMove(X - 1, Y))
 			{
 				X--;
 			}
@@ -60,4 +66,26 @@ void AMonster::Tick()
 
 		TotalTime = 0.0f;
 	}
+}
+
+bool AMonster::PrdictMove(int InX, int InY)
+{
+	for (auto Other : GEngine->GetWorld()->GetActors())
+	{
+		for (auto Component : Other->Components)
+		{
+			UCollisionComponent* OtherCollision = dynamic_cast<UCollisionComponent*>(Component);
+			if (OtherCollision)
+			{
+				if (OtherCollision->bIsGenerateHit && InX == Other->GetX() && InY == Other->GetY())
+				{
+
+					ReceiveHit(Other);
+					return false;
+				}
+			}
+		}
+	}
+
+	return true;
 }
