@@ -57,6 +57,7 @@ void UWorld::Load(std::string MapName)
 			if (Line[i] == 'M')
 			{
 				SpawnActor<AMonster>()->SetActorLocation(i, Y);
+				SpawnActor<AMonster>()->SetActorLocation(i, Y);
 				SpawnActor<AFloor>()->SetActorLocation(i, Y);
 			}
 			if (Line[i] == 'G')

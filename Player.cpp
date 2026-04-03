@@ -62,25 +62,37 @@ void APlayer::Move()
 	{
 		if (Event.key.keysym.sym == SDLK_w)
 		{
-			--Y;
+			if (Y > 1)
+			{
+				--Y;
+			}
 			SetActorLocation(X, Y);
 			SpriteIndexY = 2;
 		}
 		if (Event.key.keysym.sym == SDLK_s)
 		{
-			++Y;
+			if (Y < 8)
+			{
+				++Y;
+			}
 			SetActorLocation(X, Y);
 			SpriteIndexY = 3;
 		}
 		if (Event.key.keysym.sym == SDLK_a)
 		{
-			--X;
+			if (X > 1)
+			{
+				--X;
+			}
 			SetActorLocation(X, Y);
 			SpriteIndexY = 0;
 		}
 		if (Event.key.keysym.sym == SDLK_d)
 		{
-			++X;
+			if (X < 8)
+			{
+				++X;
+			}
 			SetActorLocation(X, Y);
 			SpriteIndexY = 1;
 		}
