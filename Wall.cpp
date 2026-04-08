@@ -18,6 +18,8 @@ AWall::AWall(int InX, int InY, char InMesh)
 	CollisionComponent = CreateDefaultSubObject<UCollisionComponent>("Collision");
 	CollisionComponent->bIsGenerateHit = true;
 	CollisionComponent->bIsGenerateOverlap = true;
+
+	Name = "Wall";
 }
 
 AWall::~AWall()

@@ -13,22 +13,20 @@ ACharacter::~ACharacter()
 
 bool ACharacter::PrdictMove(int InX, int InY)
 {
-	for (auto Other : GEngine->GetWorld()->GetActors())
+	for (auto Other : GetWorld()->GetActors())
 	{
-		//본인은 충돌체크 X
-		if (Other == this)
+		if (Other == this) //자기 비교 할필요가 없음
 		{
 			continue;
 		}
 
-		for (auto Component : Other->Components)
+		for (auto OtherComponent : Other->Components)
 		{
-			UCollisionComponent* OtherCollision = dynamic_cast<UCollisionComponent*>(Component);
+			UCollisionComponent* OtherCollision = dynamic_cast<UCollisionComponent*>(OtherComponent);
 			if (OtherCollision)
 			{
 				if (OtherCollision->bIsGenerateHit && InX == Other->GetX() && InY == Other->GetY())
 				{
-
 					ReceiveHit(Other);
 					return false;
 				}

@@ -13,6 +13,8 @@ AFloor::AFloor(int InX, int InY)
 	SpriteComponent->ZOrder = 0;
 	SpriteComponent->Image = TempResource.Image;
 	SpriteComponent->Texture = TempResource.Texture;
+
+	Name = "Floor";
 }
 
 AFloor::~AFloor()

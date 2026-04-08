@@ -93,10 +93,10 @@ void UWorld::Load(std::string MapName)
 	std::sort(Actors.begin(), Actors.end(),
 		[&](AActor* First, AActor* Second) -> int {
 
-			USpriteComponent* FirstRenderComponent = nullptr;
+			IRenderableComponent* FirstRenderComponent = nullptr;
 			for (auto Component : First->Components)
 			{
-				FirstRenderComponent = dynamic_cast<USpriteComponent*>(Component);
+				FirstRenderComponent = dynamic_cast<IRenderableComponent*>(Component);
 				if (FirstRenderComponent)
 				{
 					break;
@@ -108,10 +108,10 @@ void UWorld::Load(std::string MapName)
 				return 0;
 			}
 
-			USpriteComponent* SecondRenderComponent = nullptr;
+			IRenderableComponent* SecondRenderComponent = nullptr;
 			for (auto Component : Second->Components)
 			{
-				SecondRenderComponent = dynamic_cast<USpriteComponent*>(Component);
+				SecondRenderComponent = dynamic_cast<IRenderableComponent*>(Component);
 				if (SecondRenderComponent)
 				{
 					break;
@@ -151,7 +151,7 @@ void UWorld::Render()
 		{
 			//추상 클래스는 dynamic_cast가 안된다. 인스턴스를 못뽑기 때문에 변환이 안된다.
 			IRenderableComponent* RenderComponet = dynamic_cast<IRenderableComponent*>(Component);
-			if (RenderComponet)
+			if (RenderComponet && RenderComponet->bIsVisible)
 			{
 				RenderComponet->Render();
 			}

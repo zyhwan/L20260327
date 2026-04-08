@@ -4,6 +4,9 @@
 
 USpriteComponent::USpriteComponent()
 {
+	bIsVisible = true;
+	Texture = nullptr;
+	Image = nullptr;
 }
 
 USpriteComponent::~USpriteComponent()

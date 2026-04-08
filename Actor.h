@@ -36,6 +36,17 @@ public:
 	FActorBeginOverlapSignature OnActorBeginOverlap;
 
 	virtual void ReceiveHit(class AActor* Other);
+	class UWorld* GetWorld();
+
+	void SetWorld(class UWorld* InWorld)
+	{
+		World = InWorld;
+	}
+
+	inline const std::string& GetName() const
+	{
+		return Name;
+	}
 
 
 protected:
@@ -50,5 +61,9 @@ protected:
 		Components.push_back(temp);
 		return temp;
 	}
+
+	class UWorld* World;
+
+	std::string Name;
 };
 

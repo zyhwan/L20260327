@@ -38,6 +38,7 @@ public:
 	{
 		AActor* NewActor = new T;
 		Actors.push_back(NewActor);
+		NewActor->SetWorld(this);
 
 		return NewActor;
 	}

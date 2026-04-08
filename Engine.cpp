@@ -5,6 +5,7 @@
 #include "Actor.h"
 #include "SDL.h"
 #include "ResourceManager.h"
+#include "AudioComponent.h"
 
 UEngine* UEngine::Instance = nullptr;
 
@@ -39,7 +40,7 @@ void UEngine::Init()
 
 	TTF_Init();
 	
-	Font = TTF_OpenFont("./Data/Font.ttf", 32);
+	Font = TTF_OpenFont("./Data/Font.ttf", 100);
 
 	DeltaSeconds = 0;
 
@@ -188,6 +189,7 @@ void UEngine::TermBuffer()
 	//CloseHandle(ScreenBufferHandle[0]);
 	//CloseHandle(ScreenBufferHandle[1]);
 }
+
 
 void UEngine::Stop()
 {

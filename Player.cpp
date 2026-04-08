@@ -6,6 +6,9 @@
 #include "SpriteComponent.h"
 #include "SpriteAnimationComponent.h"
 #include "CollisionComponent.h"
+#include "Goal.h"
+#include "MyGM.h"
+#include "Monster.h"
 
 APlayer::APlayer(int InX, int InY, char InMesh)
 {
@@ -24,6 +27,9 @@ APlayer::APlayer(int InX, int InY, char InMesh)
 	CollisionComponent = CreateDefaultSubObject<UCollisionComponent>("Collision");
 	CollisionComponent->bIsGenerateHit = true;
 	CollisionComponent->bIsGenerateOverlap = true;
+
+	Name = "Player";
+
 }
 
 APlayer::~APlayer()
@@ -37,8 +43,26 @@ void APlayer::BeginPlay()
 	__super::BeginPlay();
 	OnActorBeginOverlap = [&](AActor* Other) -> void {
 		//충돌 로직.
+		AGoal* Goal = dynamic_cast<AGoal*>(Other);
+		if (Goal)
+		{
+			AMyGM* GM = dynamic_cast<AMyGM*>(UGameplayStatics::GetGameMode());
+			if (GM)
+			{
+				GM->GameComplete();
+			}
+		}
+
+		AMonster* Monster = dynamic_cast<AMonster*>(Other);
+		if (Monster)
+		{
+			AMyGM* GM = dynamic_cast<AMyGM*>(UGameplayStatics::GetGameMode());
+			if (GM)
+			{
+				GM->GameOver();
+			}
+		}
 		};
-	//OnActorBeginOverlap = ProcessBeginOverlap;
 }
 
 void APlayer::Tick()
@@ -55,7 +79,7 @@ void APlayer::ReceiveHit(AActor* Other)
 
 void APlayer::ProcessBeginOverlap(AActor* OtherActor)
 {
-
+	SDL_Log("겹침 ");
 }
 
 void APlayer::Move()
@@ -68,21 +92,25 @@ void APlayer::Move()
 		{
 			--Y;
 			SpriteAnimationComponent->SpriteIndexY = 2;
+			SpriteAnimationComponent->SpriteIndexX = 0;
 		}
 		if (Event.key.keysym.sym == SDLK_s && PrdictMove(X, Y + 1))
 		{
 			++Y;
 			SpriteAnimationComponent->SpriteIndexY = 3;
+			SpriteAnimationComponent->SpriteIndexX = 0;
 		}
 		if (Event.key.keysym.sym == SDLK_a && PrdictMove(X - 1, Y))
 		{
 			--X;
 			SpriteAnimationComponent->SpriteIndexY = 0;
+			SpriteAnimationComponent->SpriteIndexX = 0;
 		}
 		if (Event.key.keysym.sym == SDLK_d && PrdictMove(X + 1, Y))
 		{
 			++X;
 			SpriteAnimationComponent->SpriteIndexY = 1;
+			SpriteAnimationComponent->SpriteIndexX = 0;
 		}
 		if (Event.key.keysym.sym == SDLK_ESCAPE)
 		{

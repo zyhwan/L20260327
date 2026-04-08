@@ -8,6 +8,9 @@ class IRenderableComponent
 {
 public:
 	virtual void Render() = 0;
+	
+	int ZOrder = 0; //렌더링 순서 가중치
 
+	int bIsVisible : 1; //visibility 여부 체크
 };
 

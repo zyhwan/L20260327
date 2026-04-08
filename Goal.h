@@ -10,6 +10,6 @@ public:
 	virtual ~AGoal();
 
 	USpriteComponent* SpriteComponent;
-
+	class UCollisionComponent* CollisionComponent;
 };
 

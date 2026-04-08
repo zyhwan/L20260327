@@ -4,8 +4,11 @@
 AYouDieActor::AYouDieActor()
 {
 	TextRenderComponent->SetText("You Died.");
-	X = 200;
-	Y = 150;
+	X = 270;
+	Y = 300;
+
+	TextRenderComponent->ZOrder = 200;
+	TextRenderComponent->bIsVisible = false;
 }
 
 AYouDieActor::~AYouDieActor()

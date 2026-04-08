@@ -16,8 +16,10 @@ AMonster::AMonster(int InX, int InY, char InMesh)
 	SpriteComponent->Texture = TempResource.Texture;
 
 	CollisionComponent = CreateDefaultSubObject<UCollisionComponent>("Collision");
-	CollisionComponent->bIsGenerateHit = true;
+	CollisionComponent->bIsGenerateHit = false;
 	CollisionComponent->bIsGenerateOverlap = true;
+
+	Name = "Monster";
 }
 
 AMonster::~AMonster()
