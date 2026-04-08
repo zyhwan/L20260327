@@ -28,7 +28,6 @@ UWorld::~UWorld()
 
 void UWorld::Load(std::string MapName)
 {
-	Actors.push_back(new AGameMode());
 
 	std::ifstream File(MapName);
 
@@ -86,6 +85,8 @@ void UWorld::Load(std::string MapName)
 	MaxY = Y;
 
 	SDL_SetWindowSize(GEngine->GetWindow(), MaxX * 80, MaxY * 80);
+
+	Actors.push_back(new AGameMode());
 
 	std::sort(Actors.begin(), Actors.end(),
 		[&](AActor* First, AActor* Second) -> int {
