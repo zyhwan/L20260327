@@ -11,7 +11,7 @@
 #include <algorithm>
 #include "SpriteComponent.h"
 #include "GameMode.h"
-
+#include "YouDieActor.h"
 
 UWorld::UWorld()
 {
@@ -87,6 +87,8 @@ void UWorld::Load(std::string MapName)
 	SDL_SetWindowSize(GEngine->GetWindow(), MaxX * 80, MaxY * 80);
 
 	Actors.push_back(new AGameMode());
+	SpawnActor<AYouDieActor>();
+
 
 	std::sort(Actors.begin(), Actors.end(),
 		[&](AActor* First, AActor* Second) -> int {

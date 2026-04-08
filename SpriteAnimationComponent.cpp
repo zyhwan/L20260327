@@ -14,7 +14,7 @@ void USpriteAnimationComponent::Render()
 {
 	int TileSize = 80;
 
-	SDL_Rect Rect = { SpriteIndexX * W, SpriteIndexY * H, W, H };
+	SDL_Rect Rect = { SpriteIndexX * (int)W, SpriteIndexY * (int)H, (int)W, (int)H };
 	SDL_Rect DestinationRect = { Owner->GetX() * TileSize, Owner->GetY() * TileSize, TileSize, TileSize };
 
 	SDL_RenderCopy(GEngine->GetRenderer(), Texture, &Rect, &DestinationRect);

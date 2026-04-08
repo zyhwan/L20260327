@@ -1,9 +1,14 @@
 #pragma once
 #include <Windows.h>
 #include "SDL.h"
+#include "SDL_ttf.h"
+#include "SDL_mixer.h"
 
 #pragma comment(lib, "SDL2")
 #pragma comment(lib, "SDL2main")
+#pragma comment(lib, "SDL2_mixer")
+#pragma comment(lib, "SDL2_ttf")
+
 
 class UWorld;
 class UResourceManager;
@@ -65,10 +70,13 @@ public:
 
 	void Render(int InX, int InY, SDL_Texture* InTexture);
 
+	TTF_Font* Font;
 private:
 	void Input();
 	void Tick();
 	void Render();
+
+
 
 	UWorld* World;
 	SDL_Window* MyWindow;

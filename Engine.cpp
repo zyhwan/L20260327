@@ -37,6 +37,10 @@ void UEngine::Init()
 	//렌더러 만들기 윈도우와 동일하다.
 	MyRender = SDL_CreateRenderer(MyWindow, -1, SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE);
 
+	TTF_Init();
+	
+	Font = TTF_OpenFont("./Data/Font.ttf", 32);
+
 	DeltaSeconds = 0;
 
     bIsRunning = 1;
@@ -49,6 +53,12 @@ void UEngine::Init()
 
 void UEngine::Term()
 {
+	//추후에 리소스 매니저로 옮기기.
+	if(Font)
+	{
+		TTF_CloseFont(Font);
+	}
+
 	SDL_DestroyRenderer(MyRender);
 	SDL_DestroyWindow(MyWindow);
 	SDL_Quit();
